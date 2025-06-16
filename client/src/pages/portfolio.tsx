@@ -166,7 +166,7 @@ export default function PortfolioPage() {
                             {transactionWithFund.fund?.name || 'Unknown Fund'} - Purchase
                           </p>
                           <p className="text-sm text-gray-500">
-                            {transaction.createdAt.toLocaleDateString()}
+                            {new Date(transaction.createdAt).toLocaleDateString()}
                           </p>
                         </div>
                         <div className="text-right">
