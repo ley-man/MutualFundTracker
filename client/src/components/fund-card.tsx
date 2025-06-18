@@ -23,6 +23,53 @@ export default function FundCard({ fund, onSelect, viewMode = "grid" }: FundCard
     return returnStr.startsWith("+") ? "text-success-green" : "text-red-600";
   };
 
+  if (viewMode === "list") {
+    return (
+      <Card className="hover:shadow-md transition-shadow cursor-pointer">
+        <CardContent className="p-4">
+          <div className="flex items-center justify-between">
+            <div className="flex-1">
+              <h3 className="font-semibold text-gray-900 mb-1">{fund.name}</h3>
+              <p className="text-sm text-gray-600">{fund.manager}</p>
+            </div>
+            
+            <div className="flex items-center gap-6 ml-6">
+              <div className="text-center min-w-[80px]">
+                <p className="text-xs text-gray-500 uppercase tracking-wide">NAV</p>
+                <p className="text-sm font-bold text-gray-900">{formatCurrency(parseFloat(fund.nav))}</p>
+              </div>
+              <div className="text-center min-w-[80px]">
+                <p className="text-xs text-gray-500 uppercase tracking-wide">1Y Return</p>
+                <p className={`text-sm font-bold ${getReturnColor(fund.yearReturn)}`}>
+                  {fund.yearReturn}
+                </p>
+              </div>
+              <div className="text-center min-w-[60px]">
+                <p className="text-xs text-gray-500 uppercase tracking-wide">Risk</p>
+                <p className={`text-sm font-semibold ${getRiskColor(fund.riskLevel)}`}>
+                  {fund.riskLevel}
+                </p>
+              </div>
+              <div className="text-center min-w-[100px]">
+                <p className="text-xs text-gray-500 uppercase tracking-wide">Min Investment</p>
+                <p className="text-sm font-semibold text-gray-900">
+                  {formatCurrency(fund.minInvestment)}
+                </p>
+              </div>
+              <Button 
+                onClick={() => onSelect(fund)}
+                size="sm"
+                className="ml-4 bg-finance-blue hover:bg-finance-light"
+              >
+                View Details
+              </Button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
     <Card className="hover:shadow-md transition-shadow cursor-pointer">
       <CardContent className="p-6">
