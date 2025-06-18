@@ -52,70 +52,130 @@ export class MemStorage implements IStorage {
   }
 
   private initializeFunds() {
-    const europeanFunds: InsertFund[] = [
+    const usaFunds: InsertFund[] = [
       {
-        name: "European Growth Fund",
-        manager: "Deutsche Asset Management",
-        nav: "125.47",
-        yearReturn: "+12.3%",
+        name: "US Large Cap Growth Fund",
+        manager: "Vanguard Group",
+        nav: "287.45",
+        yearReturn: "+15.2%",
         riskLevel: "Medium",
         minInvestment: 1000,
+        expenseRatio: "0.04",
+        objective: "Invests in large-cap US growth stocks with strong earnings potential and innovative business models across technology, healthcare, and consumer sectors."
+      },
+      {
+        name: "S&P 500 Index Fund",
+        manager: "Fidelity Investments",
+        nav: "432.18",
+        yearReturn: "+13.8%",
+        riskLevel: "Medium",
+        minInvestment: 1000,
+        expenseRatio: "0.03",
+        objective: "Tracks the S&P 500 index, providing broad exposure to 500 of the largest US companies across all sectors for diversified growth."
+      },
+      {
+        name: "US Small Cap Value Fund",
+        manager: "Charles Schwab",
+        nav: "89.73",
+        yearReturn: "+9.4%",
+        riskLevel: "High",
+        minInvestment: 1000,
+        expenseRatio: "0.25",
+        objective: "Focuses on undervalued small-cap US companies with strong fundamentals and potential for significant price appreciation."
+      },
+      {
+        name: "Technology Sector Fund",
+        manager: "T. Rowe Price",
+        nav: "198.64",
+        yearReturn: "+22.7%",
+        riskLevel: "High",
+        minInvestment: 1000,
         expenseRatio: "0.75",
-        objective: "The fund seeks to achieve long-term capital growth by investing primarily in European equity securities. The fund focuses on companies with strong growth potential across various sectors within the European market."
+        objective: "Concentrates on US technology companies including software, semiconductors, and digital services with high growth potential."
       },
       {
-        name: "European Value Fund",
-        manager: "Allianz Global Investors",
-        nav: "89.23",
-        yearReturn: "+8.7%",
+        name: "US Treasury Bond Fund",
+        manager: "BlackRock",
+        nav: "104.32",
+        yearReturn: "+3.1%",
         riskLevel: "Low",
         minInvestment: 1000,
-        expenseRatio: "0.65",
-        objective: "Seeks to provide long-term capital appreciation by investing in undervalued European companies with strong fundamentals and potential for price appreciation."
+        expenseRatio: "0.15",
+        objective: "Invests in US Treasury securities to provide stable income and capital preservation with minimal credit risk."
       },
       {
-        name: "European Bond Fund",
-        manager: "BNP Paribas Asset Management",
-        nav: "102.18",
-        yearReturn: "+4.2%",
+        name: "Dividend Aristocrats Fund",
+        manager: "State Street Global",
+        nav: "156.89",
+        yearReturn: "+8.9%",
         riskLevel: "Low",
         minInvestment: 1000,
-        expenseRatio: "0.45",
-        objective: "Aims to provide regular income and capital preservation by investing in high-quality European government and corporate bonds."
+        expenseRatio: "0.35",
+        objective: "Invests in S&P 500 companies that have increased dividends for 25+ consecutive years, providing steady income and growth."
       },
       {
-        name: "European Tech Fund",
-        manager: "Amundi Asset Management",
-        nav: "178.92",
-        yearReturn: "+18.5%",
+        name: "Healthcare Innovation Fund",
+        manager: "JPMorgan Asset Management",
+        nav: "243.51",
+        yearReturn: "+17.3%",
+        riskLevel: "Medium",
+        minInvestment: 1000,
+        expenseRatio: "0.85",
+        objective: "Focuses on US healthcare companies driving innovation in biotechnology, pharmaceuticals, and medical devices."
+      },
+      {
+        name: "ESG Leaders Fund",
+        manager: "Goldman Sachs Asset Management",
+        nav: "135.27",
+        yearReturn: "+11.6%",
+        riskLevel: "Medium",
+        minInvestment: 1000,
+        expenseRatio: "0.50",
+        objective: "Invests in US companies with superior environmental, social, and governance practices while seeking competitive returns."
+      },
+      {
+        name: "Real Estate Investment Fund",
+        manager: "Invesco",
+        nav: "78.95",
+        yearReturn: "+6.8%",
+        riskLevel: "Medium",
+        minInvestment: 1000,
+        expenseRatio: "0.60",
+        objective: "Provides exposure to US real estate investment trusts (REITs) for diversification and income generation."
+      },
+      {
+        name: "Emerging Growth Fund",
+        manager: "American Century",
+        nav: "167.43",
+        yearReturn: "+19.5%",
         riskLevel: "High",
         minInvestment: 1000,
         expenseRatio: "0.95",
-        objective: "Focuses on European technology companies with innovative products and services, seeking high growth potential in the digital economy."
+        objective: "Invests in rapidly growing US companies with innovative products and expanding market opportunities."
       },
       {
-        name: "European ESG Fund",
-        manager: "Nordea Asset Management",
-        nav: "94.75",
-        yearReturn: "+9.8%",
+        name: "Mid Cap Blend Fund",
+        manager: "Franklin Templeton",
+        nav: "112.78",
+        yearReturn: "+12.1%",
         riskLevel: "Medium",
         minInvestment: 1000,
-        expenseRatio: "0.80",
-        objective: "Invests in European companies that meet strict environmental, social, and governance criteria while seeking competitive returns."
+        expenseRatio: "0.65",
+        objective: "Balances growth and value strategies in mid-cap US companies offering potential for capital appreciation."
       },
       {
-        name: "European Dividend Fund",
-        manager: "Schroders Investment",
-        nav: "67.34",
-        yearReturn: "+6.4%",
+        name: "Municipal Bond Fund",
+        manager: "Nuveen",
+        nav: "96.84",
+        yearReturn: "+2.8%",
         riskLevel: "Low",
         minInvestment: 1000,
-        expenseRatio: "0.70",
-        objective: "Provides regular dividend income by investing in European companies with strong dividend-paying histories and sustainable business models."
+        expenseRatio: "0.45",
+        objective: "Invests in tax-free municipal bonds issued by US states and localities, providing tax-advantaged income."
       }
     ];
 
-    europeanFunds.forEach(fund => {
+    usaFunds.forEach(fund => {
       this.createFund(fund);
     });
   }

@@ -6,9 +6,10 @@ import type { Fund } from "@shared/schema";
 interface FundCardProps {
   fund: Fund;
   onSelect: (fund: Fund) => void;
+  viewMode?: "grid" | "list";
 }
 
-export default function FundCard({ fund, onSelect }: FundCardProps) {
+export default function FundCard({ fund, onSelect, viewMode = "grid" }: FundCardProps) {
   const getRiskColor = (risk: string) => {
     switch (risk.toLowerCase()) {
       case "low": return "text-success-green";

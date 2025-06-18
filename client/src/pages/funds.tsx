@@ -3,7 +3,8 @@ import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Search, Grid3X3, List } from "lucide-react";
 import FundCard from "@/components/fund-card";
 import FundDetail from "@/components/fund-detail";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -13,7 +14,7 @@ export default function FundsPage() {
   const [selectedFund, setSelectedFund] = useState<Fund | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
-  const [regionFilter, setRegionFilter] = useState("all");
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
 
   const { data: funds = [], isLoading } = useQuery<Fund[]>({
     queryKey: ["/api/funds"],
@@ -23,11 +24,12 @@ export default function FundsPage() {
     const matchesSearch = fund.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          fund.manager.toLowerCase().includes(searchTerm.toLowerCase());
     
-    // Simple category filtering based on fund name
+    // Simple category filtering based on fund name and type
     const matchesCategory = categoryFilter === "all" || 
-      (categoryFilter === "equity" && fund.name.toLowerCase().includes("growth")) ||
-      (categoryFilter === "bond" && fund.name.toLowerCase().includes("bond")) ||
-      (categoryFilter === "mixed" && (fund.name.toLowerCase().includes("value") || fund.name.toLowerCase().includes("esg")));
+      (categoryFilter === "equity" && (fund.name.toLowerCase().includes("growth") || fund.name.toLowerCase().includes("cap") || fund.name.toLowerCase().includes("s&p"))) ||
+      (categoryFilter === "bond" && (fund.name.toLowerCase().includes("bond") || fund.name.toLowerCase().includes("treasury") || fund.name.toLowerCase().includes("municipal"))) ||
+      (categoryFilter === "mixed" && (fund.name.toLowerCase().includes("value") || fund.name.toLowerCase().includes("esg") || fund.name.toLowerCase().includes("blend"))) ||
+      (categoryFilter === "sector" && (fund.name.toLowerCase().includes("technology") || fund.name.toLowerCase().includes("healthcare") || fund.name.toLowerCase().includes("real estate")));
     
     return matchesSearch && matchesCategory;
   });
@@ -72,20 +74,28 @@ export default function FundsPage() {
                     <SelectItem value="equity">Equity Funds</SelectItem>
                     <SelectItem value="bond">Bond Funds</SelectItem>
                     <SelectItem value="mixed">Mixed Funds</SelectItem>
+                    <SelectItem value="sector">Sector Funds</SelectItem>
                   </SelectContent>
                 </Select>
-                <Select value={regionFilter} onValueChange={setRegionFilter}>
-                  <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="All Regions" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Regions</SelectItem>
-                    <SelectItem value="europe">Europe</SelectItem>
-                    <SelectItem value="germany">Germany</SelectItem>
-                    <SelectItem value="france">France</SelectItem>
-                    <SelectItem value="uk">UK</SelectItem>
-                  </SelectContent>
-                </Select>
+                
+                <div className="flex border rounded-md">
+                  <Button
+                    variant={viewMode === "grid" ? "default" : "ghost"}
+                    size="sm"
+                    onClick={() => setViewMode("grid")}
+                    className="rounded-r-none"
+                  >
+                    <Grid3X3 className="w-4 h-4" />
+                  </Button>
+                  <Button
+                    variant={viewMode === "list" ? "default" : "ghost"}
+                    size="sm"
+                    onClick={() => setViewMode("list")}
+                    className="rounded-l-none"
+                  >
+                    <List className="w-4 h-4" />
+                  </Button>
+                </div>
               </div>
             </div>
           </CardContent>
@@ -147,10 +157,13 @@ export default function FundsPage() {
           </Card>
         </div>
 
-        {/* Fund Cards Grid */}
+        {/* Fund Cards Grid/List */}
         {isLoading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {Array.from({ length: 6 }).map((_, i) => (
+          <div className={viewMode === "grid" 
+            ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+            : "space-y-4"
+          }>
+            {Array.from({ length: 12 }).map((_, i) => (
               <Card key={i}>
                 <CardContent className="p-6">
                   <Skeleton className="h-4 w-3/4 mb-2" />
@@ -166,12 +179,16 @@ export default function FundsPage() {
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className={viewMode === "grid" 
+            ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+            : "space-y-4"
+          }>
             {filteredFunds.map((fund) => (
               <FundCard
                 key={fund.id}
                 fund={fund}
                 onSelect={setSelectedFund}
+                viewMode={viewMode}
               />
             ))}
           </div>
