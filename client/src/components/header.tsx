@@ -21,13 +21,13 @@ export default function Header() {
           </div>
           
           <nav className="hidden md:flex space-x-8">
-            <Link href="/">
+            <Link href="/trade">
               <a className={`font-medium pb-4 transition-colors ${
-                location === "/" 
+                location === "/trade" || location === "/"
                   ? "text-finance-blue border-b-2 border-finance-blue" 
                   : "text-gray-600 hover:text-finance-blue"
               }`}>
-                Funds
+                Trade
               </a>
             </Link>
             <Link href="/portfolio">

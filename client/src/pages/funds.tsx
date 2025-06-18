@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Search, Grid3X3, List } from "lucide-react";
 import FundCard from "@/components/fund-card";
 import FundDetail from "@/components/fund-detail";
@@ -15,23 +16,25 @@ export default function FundsPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [activeRegion, setActiveRegion] = useState<"US" | "Offshore">("US");
 
   const { data: funds = [], isLoading } = useQuery<Fund[]>({
     queryKey: ["/api/funds"],
   });
 
   const filteredFunds = funds.filter(fund => {
+    const matchesRegion = fund.region === activeRegion;
     const matchesSearch = fund.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          fund.manager.toLowerCase().includes(searchTerm.toLowerCase());
     
-    // Simple category filtering based on fund name and type
+    // Category filtering based on fund name and type
     const matchesCategory = categoryFilter === "all" || 
-      (categoryFilter === "equity" && (fund.name.toLowerCase().includes("growth") || fund.name.toLowerCase().includes("cap") || fund.name.toLowerCase().includes("s&p"))) ||
-      (categoryFilter === "bond" && (fund.name.toLowerCase().includes("bond") || fund.name.toLowerCase().includes("treasury") || fund.name.toLowerCase().includes("municipal"))) ||
-      (categoryFilter === "mixed" && (fund.name.toLowerCase().includes("value") || fund.name.toLowerCase().includes("esg") || fund.name.toLowerCase().includes("blend"))) ||
+      (categoryFilter === "equity" && (fund.name.toLowerCase().includes("growth") || fund.name.toLowerCase().includes("cap") || fund.name.toLowerCase().includes("s&p") || fund.name.toLowerCase().includes("equity"))) ||
+      (categoryFilter === "bond" && (fund.name.toLowerCase().includes("bond") || fund.name.toLowerCase().includes("treasury") || fund.name.toLowerCase().includes("municipal") || fund.name.toLowerCase().includes("income"))) ||
+      (categoryFilter === "mixed" && (fund.name.toLowerCase().includes("value") || fund.name.toLowerCase().includes("esg") || fund.name.toLowerCase().includes("blend") || fund.name.toLowerCase().includes("allocation") || fund.name.toLowerCase().includes("multi"))) ||
       (categoryFilter === "sector" && (fund.name.toLowerCase().includes("technology") || fund.name.toLowerCase().includes("healthcare") || fund.name.toLowerCase().includes("real estate")));
     
-    return matchesSearch && matchesCategory;
+    return matchesRegion && matchesSearch && matchesCategory;
   });
 
   if (selectedFund) {
@@ -48,58 +51,72 @@ export default function FundsPage() {
   return (
     <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="space-y-6">
-        {/* Search and Filter Bar */}
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
-              <div className="flex-1 max-w-md">
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                  <Input
-                    type="text"
-                    placeholder="Search funds..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-10"
-                  />
+        {/* Header */}
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">Trade</h1>
+          <p className="text-gray-600 mt-2">Explore and invest in mutual funds</p>
+        </div>
+
+        {/* Region Tabs */}
+        <Tabs value={activeRegion} onValueChange={(value) => setActiveRegion(value as "US" | "Offshore")}>
+          <TabsList className="grid w-full grid-cols-2 max-w-md">
+            <TabsTrigger value="US">US Funds</TabsTrigger>
+            <TabsTrigger value="Offshore">Offshore Funds</TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value={activeRegion} className="space-y-6">
+            {/* Search and Filter Bar */}
+            <Card>
+              <CardContent className="p-6">
+                <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
+                  <div className="flex-1 max-w-md">
+                    <div className="relative">
+                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                      <Input
+                        type="text"
+                        placeholder="Search funds..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="pl-10"
+                      />
+                    </div>
+                  </div>
+                  <div className="flex gap-3">
+                    <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+                      <SelectTrigger className="w-[180px]">
+                        <SelectValue placeholder="All Categories" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">All Categories</SelectItem>
+                        <SelectItem value="equity">Equity Funds</SelectItem>
+                        <SelectItem value="bond">Bond Funds</SelectItem>
+                        <SelectItem value="mixed">Mixed Funds</SelectItem>
+                        <SelectItem value="sector">Sector Funds</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    
+                    <div className="flex border rounded-md">
+                      <Button
+                        variant={viewMode === "grid" ? "default" : "ghost"}
+                        size="sm"
+                        onClick={() => setViewMode("grid")}
+                        className="rounded-r-none"
+                      >
+                        <Grid3X3 className="w-4 h-4" />
+                      </Button>
+                      <Button
+                        variant={viewMode === "list" ? "default" : "ghost"}
+                        size="sm"
+                        onClick={() => setViewMode("list")}
+                        className="rounded-l-none"
+                      >
+                        <List className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div className="flex gap-3">
-                <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-                  <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="All Categories" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Categories</SelectItem>
-                    <SelectItem value="equity">Equity Funds</SelectItem>
-                    <SelectItem value="bond">Bond Funds</SelectItem>
-                    <SelectItem value="mixed">Mixed Funds</SelectItem>
-                    <SelectItem value="sector">Sector Funds</SelectItem>
-                  </SelectContent>
-                </Select>
-                
-                <div className="flex border rounded-md">
-                  <Button
-                    variant={viewMode === "grid" ? "default" : "ghost"}
-                    size="sm"
-                    onClick={() => setViewMode("grid")}
-                    className="rounded-r-none"
-                  >
-                    <Grid3X3 className="w-4 h-4" />
-                  </Button>
-                  <Button
-                    variant={viewMode === "list" ? "default" : "ghost"}
-                    size="sm"
-                    onClick={() => setViewMode("list")}
-                    className="rounded-l-none"
-                  >
-                    <List className="w-4 h-4" />
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+              </CardContent>
+            </Card>
 
         {/* Performance Summary */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
@@ -194,16 +211,18 @@ export default function FundsPage() {
           </div>
         )}
 
-        {!isLoading && filteredFunds.length === 0 && (
-          <Card>
-            <CardContent className="p-12 text-center">
-              <p className="text-gray-500 text-lg">No funds found</p>
-              <p className="text-gray-400 text-sm mt-2">
-                Try adjusting your search terms or filters
-              </p>
-            </CardContent>
-          </Card>
-        )}
+            {!isLoading && filteredFunds.length === 0 && (
+              <Card>
+                <CardContent className="p-12 text-center">
+                  <p className="text-gray-500 text-lg">No funds found</p>
+                  <p className="text-gray-400 text-sm mt-2">
+                    Try adjusting your search terms or filters
+                  </p>
+                </CardContent>
+              </Card>
+            )}
+          </TabsContent>
+        </Tabs>
       </div>
     </main>
   );

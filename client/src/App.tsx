@@ -14,6 +14,7 @@ function Router() {
       <Header />
       <Switch>
         <Route path="/" component={FundsPage} />
+        <Route path="/trade" component={FundsPage} />
         <Route path="/portfolio" component={PortfolioPage} />
         <Route component={NotFound} />
       </Switch>

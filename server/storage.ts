@@ -175,8 +175,136 @@ export class MemStorage implements IStorage {
       }
     ];
 
+    const offshoreFunds: InsertFund[] = [
+      {
+        name: "BGF European Value Fund",
+        manager: "BlackRock - Luxembourg",
+        nav: "156.32",
+        yearReturn: "+9.8%",
+        riskLevel: "Medium",
+        minInvestment: 5000,
+        expenseRatio: "1.25",
+        objective: "Seeks long-term capital growth by investing in undervalued European equity securities with strong fundamentals and recovery potential."
+      },
+      {
+        name: "BGF Global Allocation Fund",
+        manager: "BlackRock - Luxembourg", 
+        nav: "134.78",
+        yearReturn: "+7.4%",
+        riskLevel: "Medium",
+        minInvestment: 5000,
+        expenseRatio: "1.50",
+        objective: "Provides diversified global exposure across asset classes, currencies and regions to achieve long-term capital appreciation."
+      },
+      {
+        name: "BGF Global Multi Asset Income Fund",
+        manager: "BlackRock - Luxembourg",
+        nav: "98.65",
+        yearReturn: "+5.2%",
+        riskLevel: "Low",
+        minInvestment: 5000,
+        expenseRatio: "1.35",
+        objective: "Generates regular income through diversified investments in global fixed income and equity securities."
+      },
+      {
+        name: "Baillie Gifford Worldwide Long Term Global Growth Fund",
+        manager: "Baillie Gifford - Ireland",
+        nav: "287.91",
+        yearReturn: "+16.3%",
+        riskLevel: "High",
+        minInvestment: 10000,
+        expenseRatio: "0.75",
+        objective: "Invests in global companies with exceptional long-term growth potential, focusing on innovative and disruptive businesses."
+      },
+      {
+        name: "Coronation Global Equity Select Fund",
+        manager: "Coronation Fund Managers - Ireland",
+        nav: "178.45",
+        yearReturn: "+11.7%",
+        riskLevel: "Medium",
+        minInvestment: 10000,
+        expenseRatio: "1.00",
+        objective: "Seeks capital appreciation through concentrated investments in high-quality global equities with sustainable competitive advantages."
+      },
+      {
+        name: "Fundsmith Equity Fund",
+        manager: "Fundsmith LLP - United Kingdom",
+        nav: "342.18",
+        yearReturn: "+13.9%",
+        riskLevel: "Medium",
+        minInvestment: 1000,
+        expenseRatio: "1.05",
+        objective: "Invests in high-quality companies with durable competitive advantages, strong pricing power, and predictable cash flows."
+      },
+      {
+        name: "Jupiter Merian World Equity Fund",
+        manager: "Jupiter Asset Management - Ireland",
+        nav: "203.67",
+        yearReturn: "+12.1%",
+        riskLevel: "Medium",
+        minInvestment: 5000,
+        expenseRatio: "1.15",
+        objective: "Focuses on global equity investments in companies with strong fundamentals and attractive long-term growth prospects."
+      },
+      {
+        name: "Lindsell Train Global Equity Fund",
+        manager: "Lindsell Train - Ireland",
+        nav: "456.23",
+        yearReturn: "+14.8%",
+        riskLevel: "Medium",
+        minInvestment: 10000,
+        expenseRatio: "0.65",
+        objective: "Concentrates on global companies with strong brands, pricing power, and sustainable competitive moats."
+      },
+      {
+        name: "Ninety One Global Franchise Fund",
+        manager: "Ninety One - Luxembourg",
+        nav: "298.74",
+        yearReturn: "+10.5%",
+        riskLevel: "Medium",
+        minInvestment: 5000,
+        expenseRatio: "1.20",
+        objective: "Invests in global franchise businesses with strong market positions and predictable earnings growth."
+      },
+      {
+        name: "Orbis Global Equity Fund",
+        manager: "Orbis Investment Management - Bermuda",
+        nav: "167.89",
+        yearReturn: "+8.9%",
+        riskLevel: "Medium",
+        minInvestment: 50000,
+        expenseRatio: "1.45",
+        objective: "Seeks to outperform global equity markets through contrarian investment approach and long-term value creation."
+      },
+      {
+        name: "Sands Capital Global Growth Fund",
+        manager: "Sands Capital Management - Ireland",
+        nav: "234.56",
+        yearReturn: "+18.7%",
+        riskLevel: "High",
+        minInvestment: 10000,
+        expenseRatio: "0.85",
+        objective: "Focuses on exceptional global growth companies with sustainable competitive advantages and long-term secular growth drivers."
+      },
+      {
+        name: "Schroder ISF Global Sustainable Growth Fund",
+        manager: "Schroders - Luxembourg",
+        nav: "189.43",
+        yearReturn: "+12.6%",
+        riskLevel: "Medium",
+        minInvestment: 5000,
+        expenseRatio: "1.10",
+        objective: "Invests in global companies that contribute to sustainable development while delivering long-term capital growth."
+      }
+    ];
+
+    // Add both US and offshore funds
     usaFunds.forEach(fund => {
-      this.createFund(fund);
+      this.createFund({ ...fund, region: 'US' });
+    });
+    
+    offshoreFunds.forEach(fund => {
+      this.createFund({ ...fund, region: 'Offshore' });
     });
   }
 
