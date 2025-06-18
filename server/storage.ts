@@ -324,6 +324,7 @@ export class MemStorage implements IStorage {
       createdAt: new Date(),
       minInvestment: insertFund.minInvestment || 1000,
       objective: insertFund.objective || null,
+      region: insertFund.region || "US",
     };
     this.funds.set(id, fund);
     return fund;
