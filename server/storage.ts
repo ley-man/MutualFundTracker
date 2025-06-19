@@ -61,7 +61,9 @@ export class MemStorage implements IStorage {
         riskLevel: "Medium",
         minInvestment: 1000,
         expenseRatio: "0.04",
-        objective: "Invests in large-cap US growth stocks with strong earnings potential and innovative business models across technology, healthcare, and consumer sectors."
+        objective: "Invests in large-cap US growth stocks with strong earnings potential and innovative business models across technology, healthcare, and consumer sectors.",
+        aum: "$125.6B",
+        currency: "USD"
       },
       {
         name: "S&P 500 Index Fund",
@@ -71,7 +73,9 @@ export class MemStorage implements IStorage {
         riskLevel: "Medium",
         minInvestment: 1000,
         expenseRatio: "0.03",
-        objective: "Tracks the S&P 500 index, providing broad exposure to 500 of the largest US companies across all sectors for diversified growth."
+        objective: "Tracks the S&P 500 index, providing broad exposure to 500 of the largest US companies across all sectors for diversified growth.",
+        aum: "$487.3B",
+        currency: "USD"
       },
       {
         name: "US Small Cap Value Fund",
@@ -81,7 +85,9 @@ export class MemStorage implements IStorage {
         riskLevel: "High",
         minInvestment: 1000,
         expenseRatio: "0.25",
-        objective: "Focuses on undervalued small-cap US companies with strong fundamentals and potential for significant price appreciation."
+        objective: "Focuses on undervalued small-cap US companies with strong fundamentals and potential for significant price appreciation.",
+        aum: "$23.7B",
+        currency: "USD"
       },
       {
         name: "Technology Sector Fund",
@@ -91,7 +97,9 @@ export class MemStorage implements IStorage {
         riskLevel: "High",
         minInvestment: 1000,
         expenseRatio: "0.75",
-        objective: "Concentrates on US technology companies including software, semiconductors, and digital services with high growth potential."
+        objective: "Concentrates on US technology companies including software, semiconductors, and digital services with high growth potential.",
+        aum: "$89.4B",
+        currency: "USD"
       },
       {
         name: "US Treasury Bond Fund",
@@ -101,7 +109,9 @@ export class MemStorage implements IStorage {
         riskLevel: "Low",
         minInvestment: 1000,
         expenseRatio: "0.15",
-        objective: "Invests in US Treasury securities to provide stable income and capital preservation with minimal credit risk."
+        objective: "Invests in US Treasury securities to provide stable income and capital preservation with minimal credit risk.",
+        aum: "$156.2B",
+        currency: "USD"
       },
       {
         name: "Dividend Aristocrats Fund",
@@ -111,7 +121,9 @@ export class MemStorage implements IStorage {
         riskLevel: "Low",
         minInvestment: 1000,
         expenseRatio: "0.35",
-        objective: "Invests in S&P 500 companies that have increased dividends for 25+ consecutive years, providing steady income and growth."
+        objective: "Invests in S&P 500 companies that have increased dividends for 25+ consecutive years, providing steady income and growth.",
+        aum: "$67.8B",
+        currency: "USD"
       },
       {
         name: "Healthcare Innovation Fund",
@@ -121,7 +133,9 @@ export class MemStorage implements IStorage {
         riskLevel: "Medium",
         minInvestment: 1000,
         expenseRatio: "0.85",
-        objective: "Focuses on US healthcare companies driving innovation in biotechnology, pharmaceuticals, and medical devices."
+        objective: "Focuses on US healthcare companies driving innovation in biotechnology, pharmaceuticals, and medical devices.",
+        aum: "$34.9B",
+        currency: "USD"
       },
       {
         name: "ESG Leaders Fund",
@@ -131,7 +145,9 @@ export class MemStorage implements IStorage {
         riskLevel: "Medium",
         minInvestment: 1000,
         expenseRatio: "0.50",
-        objective: "Invests in US companies with superior environmental, social, and governance practices while seeking competitive returns."
+        objective: "Invests in US companies with superior environmental, social, and governance practices while seeking competitive returns.",
+        aum: "$78.3B",
+        currency: "USD"
       },
       {
         name: "Real Estate Investment Fund",
@@ -141,7 +157,9 @@ export class MemStorage implements IStorage {
         riskLevel: "Medium",
         minInvestment: 1000,
         expenseRatio: "0.60",
-        objective: "Provides exposure to US real estate investment trusts (REITs) for diversification and income generation."
+        objective: "Provides exposure to US real estate investment trusts (REITs) for diversification and income generation.",
+        aum: "$42.1B",
+        currency: "USD"
       },
       {
         name: "Emerging Growth Fund",
@@ -151,7 +169,9 @@ export class MemStorage implements IStorage {
         riskLevel: "High",
         minInvestment: 1000,
         expenseRatio: "0.95",
-        objective: "Invests in rapidly growing US companies with innovative products and expanding market opportunities."
+        objective: "Invests in rapidly growing US companies with innovative products and expanding market opportunities.",
+        aum: "$29.6B",
+        currency: "USD"
       },
       {
         name: "Mid Cap Blend Fund",
@@ -161,7 +181,9 @@ export class MemStorage implements IStorage {
         riskLevel: "Medium",
         minInvestment: 1000,
         expenseRatio: "0.65",
-        objective: "Balances growth and value strategies in mid-cap US companies offering potential for capital appreciation."
+        objective: "Balances growth and value strategies in mid-cap US companies offering potential for capital appreciation.",
+        aum: "$54.7B",
+        currency: "USD"
       },
       {
         name: "Municipal Bond Fund",
@@ -171,7 +193,9 @@ export class MemStorage implements IStorage {
         riskLevel: "Low",
         minInvestment: 1000,
         expenseRatio: "0.45",
-        objective: "Invests in tax-free municipal bonds issued by US states and localities, providing tax-advantaged income."
+        objective: "Invests in tax-free municipal bonds issued by US states and localities, providing tax-advantaged income.",
+        aum: "$91.5B",
+        currency: "USD"
       }
     ];
 
@@ -184,7 +208,9 @@ export class MemStorage implements IStorage {
         riskLevel: "Medium",
         minInvestment: 5000,
         expenseRatio: "1.25",
-        objective: "Seeks long-term capital growth by investing in undervalued European equity securities with strong fundamentals and recovery potential."
+        objective: "Seeks long-term capital growth by investing in undervalued European equity securities with strong fundamentals and recovery potential.",
+        aum: "€8.7B",
+        currency: "EUR"
       },
       {
         name: "BGF Global Allocation Fund",
@@ -194,7 +220,9 @@ export class MemStorage implements IStorage {
         riskLevel: "Medium",
         minInvestment: 5000,
         expenseRatio: "1.50",
-        objective: "Provides diversified global exposure across asset classes, currencies and regions to achieve long-term capital appreciation."
+        objective: "Provides diversified global exposure across asset classes, currencies and regions to achieve long-term capital appreciation.",
+        aum: "€12.4B",
+        currency: "EUR"
       },
       {
         name: "BGF Global Multi Asset Income Fund",
@@ -204,7 +232,9 @@ export class MemStorage implements IStorage {
         riskLevel: "Low",
         minInvestment: 5000,
         expenseRatio: "1.35",
-        objective: "Generates regular income through diversified investments in global fixed income and equity securities."
+        objective: "Generates regular income through diversified investments in global fixed income and equity securities.",
+        aum: "€5.9B",
+        currency: "EUR"
       },
       {
         name: "Baillie Gifford Worldwide Long Term Global Growth Fund",
@@ -214,7 +244,9 @@ export class MemStorage implements IStorage {
         riskLevel: "High",
         minInvestment: 10000,
         expenseRatio: "0.75",
-        objective: "Invests in global companies with exceptional long-term growth potential, focusing on innovative and disruptive businesses."
+        objective: "Invests in global companies with exceptional long-term growth potential, focusing on innovative and disruptive businesses.",
+        aum: "€15.2B",
+        currency: "EUR"
       },
       {
         name: "Coronation Global Equity Select Fund",
@@ -224,7 +256,9 @@ export class MemStorage implements IStorage {
         riskLevel: "Medium",
         minInvestment: 10000,
         expenseRatio: "1.00",
-        objective: "Seeks capital appreciation through concentrated investments in high-quality global equities with sustainable competitive advantages."
+        objective: "Seeks capital appreciation through concentrated investments in high-quality global equities with sustainable competitive advantages.",
+        aum: "€3.8B",
+        currency: "EUR"
       },
       {
         name: "Fundsmith Equity Fund",
@@ -234,7 +268,9 @@ export class MemStorage implements IStorage {
         riskLevel: "Medium",
         minInvestment: 1000,
         expenseRatio: "1.05",
-        objective: "Invests in high-quality companies with durable competitive advantages, strong pricing power, and predictable cash flows."
+        objective: "Invests in high-quality companies with durable competitive advantages, strong pricing power, and predictable cash flows.",
+        aum: "£28.6B",
+        currency: "GBP"
       },
       {
         name: "Jupiter Merian World Equity Fund",
@@ -244,7 +280,9 @@ export class MemStorage implements IStorage {
         riskLevel: "Medium",
         minInvestment: 5000,
         expenseRatio: "1.15",
-        objective: "Focuses on global equity investments in companies with strong fundamentals and attractive long-term growth prospects."
+        objective: "Focuses on global equity investments in companies with strong fundamentals and attractive long-term growth prospects.",
+        aum: "€6.3B",
+        currency: "EUR"
       },
       {
         name: "Lindsell Train Global Equity Fund",
@@ -254,7 +292,9 @@ export class MemStorage implements IStorage {
         riskLevel: "Medium",
         minInvestment: 10000,
         expenseRatio: "0.65",
-        objective: "Concentrates on global companies with strong brands, pricing power, and sustainable competitive moats."
+        objective: "Concentrates on global companies with strong brands, pricing power, and sustainable competitive moats.",
+        aum: "€9.4B",
+        currency: "EUR"
       },
       {
         name: "Ninety One Global Franchise Fund",
@@ -264,7 +304,9 @@ export class MemStorage implements IStorage {
         riskLevel: "Medium",
         minInvestment: 5000,
         expenseRatio: "1.20",
-        objective: "Invests in global franchise businesses with strong market positions and predictable earnings growth."
+        objective: "Invests in global franchise businesses with strong market positions and predictable earnings growth.",
+        aum: "€4.7B",
+        currency: "EUR"
       },
       {
         name: "Orbis Global Equity Fund",
@@ -274,7 +316,9 @@ export class MemStorage implements IStorage {
         riskLevel: "Medium",
         minInvestment: 50000,
         expenseRatio: "1.45",
-        objective: "Seeks to outperform global equity markets through contrarian investment approach and long-term value creation."
+        objective: "Seeks to outperform global equity markets through contrarian investment approach and long-term value creation.",
+        aum: "€11.8B",
+        currency: "EUR"
       },
       {
         name: "Sands Capital Global Growth Fund",
@@ -284,7 +328,9 @@ export class MemStorage implements IStorage {
         riskLevel: "High",
         minInvestment: 10000,
         expenseRatio: "0.85",
-        objective: "Focuses on exceptional global growth companies with sustainable competitive advantages and long-term secular growth drivers."
+        objective: "Focuses on exceptional global growth companies with sustainable competitive advantages and long-term secular growth drivers.",
+        aum: "€7.9B",
+        currency: "EUR"
       },
       {
         name: "Schroder ISF Global Sustainable Growth Fund",
@@ -294,7 +340,9 @@ export class MemStorage implements IStorage {
         riskLevel: "Medium",
         minInvestment: 5000,
         expenseRatio: "1.10",
-        objective: "Invests in global companies that contribute to sustainable development while delivering long-term capital growth."
+        objective: "Invests in global companies that contribute to sustainable development while delivering long-term capital growth.",
+        aum: "€13.1B",
+        currency: "EUR"
       }
     ];
 
@@ -325,6 +373,8 @@ export class MemStorage implements IStorage {
       minInvestment: insertFund.minInvestment || 1000,
       objective: insertFund.objective || null,
       region: insertFund.region || "US",
+      aum: insertFund.aum || null,
+      currency: insertFund.currency || "USD",
     };
     this.funds.set(id, fund);
     return fund;

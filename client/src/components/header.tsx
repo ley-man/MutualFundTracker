@@ -21,9 +21,18 @@ export default function Header() {
           </div>
           
           <nav className="hidden md:flex space-x-8">
+            <Link href="/account">
+              <a className={`font-medium pb-4 transition-colors ${
+                location === "/account" || location === "/"
+                  ? "text-finance-blue border-b-2 border-finance-blue" 
+                  : "text-gray-600 hover:text-finance-blue"
+              }`}>
+                Account
+              </a>
+            </Link>
             <Link href="/trade">
               <a className={`font-medium pb-4 transition-colors ${
-                location === "/trade" || location === "/"
+                location === "/trade"
                   ? "text-finance-blue border-b-2 border-finance-blue" 
                   : "text-gray-600 hover:text-finance-blue"
               }`}>
@@ -41,9 +50,6 @@ export default function Header() {
             </Link>
             <a href="#" className="text-gray-600 hover:text-finance-blue transition-colors pb-4">
               Research
-            </a>
-            <a href="#" className="text-gray-600 hover:text-finance-blue transition-colors pb-4">
-              Account
             </a>
           </nav>
           

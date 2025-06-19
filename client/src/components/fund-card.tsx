@@ -36,7 +36,9 @@ export default function FundCard({ fund, onSelect, viewMode = "grid" }: FundCard
             <div className="flex items-center gap-6 ml-6">
               <div className="text-center min-w-[80px]">
                 <p className="text-xs text-gray-500 uppercase tracking-wide">NAV</p>
-                <p className="text-sm font-bold text-gray-900">{formatCurrency(parseFloat(fund.nav))}</p>
+                <p className="text-sm font-bold text-gray-900">
+                  {fund.currency === "USD" ? "$" : fund.currency === "EUR" ? "€" : "£"}{parseFloat(fund.nav).toFixed(2)}
+                </p>
               </div>
               <div className="text-center min-w-[80px]">
                 <p className="text-xs text-gray-500 uppercase tracking-wide">1Y Return</p>
@@ -53,9 +55,17 @@ export default function FundCard({ fund, onSelect, viewMode = "grid" }: FundCard
               <div className="text-center min-w-[100px]">
                 <p className="text-xs text-gray-500 uppercase tracking-wide">Min Investment</p>
                 <p className="text-sm font-semibold text-gray-900">
-                  {formatCurrency(fund.minInvestment)}
+                  {fund.currency === "USD" ? "$" : fund.currency === "EUR" ? "€" : "£"}{fund.minInvestment.toLocaleString()}
                 </p>
               </div>
+              {fund.aum && (
+                <div className="text-center min-w-[80px]">
+                  <p className="text-xs text-gray-500 uppercase tracking-wide">AUM</p>
+                  <p className="text-sm font-semibold text-gray-900">
+                    {fund.aum}
+                  </p>
+                </div>
+              )}
               <Button 
                 onClick={() => onSelect(fund)}
                 size="sm"
@@ -87,7 +97,7 @@ export default function FundCard({ fund, onSelect, viewMode = "grid" }: FundCard
           <div className="flex justify-between">
             <span className="text-sm text-gray-600">NAV</span>
             <span className="font-semibold text-gray-900">
-              {formatCurrency(parseFloat(fund.nav))}
+              {fund.currency === "USD" ? "$" : fund.currency === "EUR" ? "€" : "£"}{parseFloat(fund.nav).toFixed(2)}
             </span>
           </div>
           <div className="flex justify-between">
@@ -102,6 +112,14 @@ export default function FundCard({ fund, onSelect, viewMode = "grid" }: FundCard
               {fund.riskLevel}
             </span>
           </div>
+          {fund.aum && (
+            <div className="flex justify-between">
+              <span className="text-sm text-gray-600">AUM</span>
+              <span className="text-sm font-medium text-gray-900">
+                {fund.aum}
+              </span>
+            </div>
+          )}
         </div>
         
         <div className="mt-4 pt-4 border-t border-gray-100">

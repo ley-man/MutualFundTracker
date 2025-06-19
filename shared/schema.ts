@@ -13,6 +13,8 @@ export const funds = pgTable("funds", {
   expenseRatio: decimal("expense_ratio", { precision: 4, scale: 2 }).notNull(),
   objective: text("objective"),
   region: text("region").notNull().default("US"),
+  aum: text("aum"),
+  currency: text("currency").notNull().default("USD"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 

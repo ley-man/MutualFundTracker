@@ -4,6 +4,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Header from "@/components/header";
+import AccountPage from "@/pages/account";
 import FundsPage from "@/pages/funds";
 import PortfolioPage from "@/pages/portfolio";
 import NotFound from "@/pages/not-found";
@@ -13,7 +14,8 @@ function Router() {
     <div className="min-h-screen bg-neutral-50">
       <Header />
       <Switch>
-        <Route path="/" component={FundsPage} />
+        <Route path="/" component={AccountPage} />
+        <Route path="/account" component={AccountPage} />
         <Route path="/trade" component={FundsPage} />
         <Route path="/portfolio" component={PortfolioPage} />
         <Route component={NotFound} />
