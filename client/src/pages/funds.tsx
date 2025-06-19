@@ -118,61 +118,67 @@ export default function FundsPage() {
               </CardContent>
             </Card>
 
-        {/* Performance Summary */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg mr-4 flex items-center justify-center">
-                  <div className="text-white text-xs font-bold">FUNDS</div>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-600">Available Funds</p>
-                  <p className="text-2xl font-bold text-gray-900">{funds.length}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-green-600 rounded-lg mr-4 flex items-center justify-center">
-                  <div className="text-white text-xs font-bold">PERF</div>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-600">Avg. Return</p>
-                  <p className="text-2xl font-bold text-success-green">+7.2%</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-purple-600 rounded-lg mr-4 flex items-center justify-center">
-                  <div className="text-white text-xs font-bold">AUM</div>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-600">Total AUM</p>
-                  <p className="text-2xl font-bold text-gray-900">€2.4B</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <div className="w-12 h-12 bg-gradient-to-r from-orange-500 to-orange-600 rounded-lg mr-4 flex items-center justify-center">
-                  <div className="text-white text-xs font-bold">INV</div>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-600">Active Investors</p>
-                  <p className="text-2xl font-bold text-gray-900">15.7K</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+            {/* Performance Summary */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+              <Card>
+                <CardContent className="p-6">
+                  <div className="flex items-center">
+                    <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg mr-4 flex items-center justify-center">
+                      <div className="text-white text-xs font-bold">FUNDS</div>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-600">Available Funds</p>
+                      <p className="text-2xl font-bold text-gray-900">12</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="p-6">
+                  <div className="flex items-center">
+                    <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-green-600 rounded-lg mr-4 flex items-center justify-center">
+                      <div className="text-white text-xs font-bold">PERF</div>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-600">Avg. Return</p>
+                      <p className="text-2xl font-bold text-success-green">
+                        {activeRegion === "US" ? "+12.8%" : "+11.4%"}
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="p-6">
+                  <div className="flex items-center">
+                    <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-purple-600 rounded-lg mr-4 flex items-center justify-center">
+                      <div className="text-white text-xs font-bold">AUM</div>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-600">Total AUM</p>
+                      <p className="text-2xl font-bold text-gray-900">
+                        {activeRegion === "US" ? "$1.4T" : "€130B"}
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="p-6">
+                  <div className="flex items-center">
+                    <div className="w-12 h-12 bg-gradient-to-r from-orange-500 to-orange-600 rounded-lg mr-4 flex items-center justify-center">
+                      <div className="text-white text-xs font-bold">INV</div>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-600">Active Investors</p>
+                      <p className="text-2xl font-bold text-gray-900">
+                        {activeRegion === "US" ? "24.8K" : "15.7K"}
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
 
         {/* Fund Cards Grid/List */}
         {isLoading ? (
