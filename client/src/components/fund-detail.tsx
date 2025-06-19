@@ -69,12 +69,16 @@ export default function FundDetail({ fund, onBack }: FundDetailProps) {
                 <div className="text-center p-4 bg-gray-50 rounded-lg">
                   <p className="text-sm text-gray-600">Min Investment</p>
                   <p className="text-lg font-bold text-gray-900">
-                    ${fund.minInvestment.toLocaleString()}
+                    {fund.currency === "USD" ? "$" : fund.currency === "EUR" ? "€" : "£"}{fund.minInvestment.toLocaleString()}
                   </p>
                 </div>
                 <div className="text-center p-4 bg-gray-50 rounded-lg">
-                  <p className="text-sm text-gray-600">Expense Ratio</p>
-                  <p className="text-lg font-bold text-gray-900">{fund.expenseRatio}%</p>
+                  <p className="text-sm text-gray-600">
+                    {fund.aum ? "AUM" : "Expense Ratio"}
+                  </p>
+                  <p className="text-lg font-bold text-gray-900">
+                    {fund.aum ? fund.aum : `${fund.expenseRatio}%`}
+                  </p>
                 </div>
               </div>
             </CardContent>
