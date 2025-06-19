@@ -48,9 +48,15 @@ export default function Header() {
                 Portfolio
               </a>
             </Link>
-            <a href="#" className="text-gray-600 hover:text-finance-blue transition-colors pb-4">
-              Research
-            </a>
+            <Link href="/research">
+              <a className={`font-medium pb-4 transition-colors ${
+                location === "/research" 
+                  ? "text-finance-blue border-b-2 border-finance-blue" 
+                  : "text-gray-600 hover:text-finance-blue"
+              }`}>
+                Research
+              </a>
+            </Link>
           </nav>
           
           <div className="flex items-center space-x-4">
