@@ -95,6 +95,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // AI Fund Analysis
+  app.post("/api/funds/analyze", async (req, res) => {
+    try {
+      const { query } = req.body;
+      
+      if (!query || typeof query !== "string") {
+        return res.status(400).json({ error: "Query is required" });
+      }
+
+      const funds = await storage.getAllFunds();
+      const analysisRequest: FundAnalysisRequest = { query, funds };
+      
+      const result = await analyzeFunds(analysisRequest);
+      res.json(result);
+    } catch (error) {
+      console.error("Fund analysis error:", error);
+      res.status(500).json({ error: "Failed to analyze funds" });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }
