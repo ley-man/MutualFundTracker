@@ -7,8 +7,9 @@ import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
-import { Search, ArrowUpDown, ArrowUp, ArrowDown, Sparkles, X } from "lucide-react";
+import { Search, ArrowUpDown, ArrowUp, ArrowDown, Sparkles, X, Wifi, WifiOff } from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
+import { OfflineFundAnalyzer } from "@/lib/offline-analysis";
 import type { Fund } from "@shared/schema";
 
 type SortField = "name" | "yearReturn" | "aum" | "riskLevel" | "expenseRatio";
@@ -28,6 +29,7 @@ export default function ResearchPage() {
   const [aiQuery, setAiQuery] = useState("");
   const [aiResults, setAiResults] = useState<AIAnalysisResult | null>(null);
   const [showAIAnalysis, setShowAIAnalysis] = useState(false);
+  const [isOfflineMode, setIsOfflineMode] = useState(false);
 
   const { data: funds = [], isLoading } = useQuery<Fund[]>({
     queryKey: ["/api/funds"],
@@ -36,6 +38,12 @@ export default function ResearchPage() {
   const aiAnalysisMutation = useMutation({
     mutationFn: async (query: string) => {
       console.log("Starting AI analysis for query:", query);
+      
+      // Try offline mode first if already enabled
+      if (isOfflineMode) {
+        throw new Error("Offline mode enabled");
+      }
+      
       try {
         const response = await fetch("/api/funds/analyze", {
           method: "POST",
@@ -49,19 +57,31 @@ export default function ResearchPage() {
         
         const data = await response.json();
         console.log("AI analysis response:", data);
+        setIsOfflineMode(false); // Reset offline mode on successful request
         return data;
       } catch (error) {
         console.error("AI analysis error:", error);
-        throw error;
+        
+        // Fallback to offline analysis
+        console.log("Falling back to offline analysis");
+        setIsOfflineMode(true);
+        
+        const analyzer = new OfflineFundAnalyzer(funds);
+        const offlineResult = analyzer.analyze(query);
+        
+        return {
+          ...offlineResult,
+          explanation: `${offlineResult.explanation} (Offline Analysis - AI service unavailable)`
+        };
       }
     },
     onSuccess: (data) => {
-      console.log("AI analysis successful, setting results:", data);
+      console.log("Analysis successful, setting results:", data);
       setAiResults(data);
       setShowAIAnalysis(true);
     },
     onError: (error) => {
-      console.error("AI analysis mutation error:", error);
+      console.error("Analysis mutation error:", error);
     },
   });
 
@@ -160,6 +180,13 @@ export default function ResearchPage() {
     setAiQuery("");
   };
 
+  const toggleOfflineMode = () => {
+    setIsOfflineMode(!isOfflineMode);
+    if (aiResults) {
+      clearAIResults();
+    }
+  };
+
   const handleSort = (field: SortField) => {
     if (sortField === field) {
       setSortDirection(sortDirection === "asc" ? "desc" : "asc");
@@ -186,16 +213,45 @@ export default function ResearchPage() {
         {/* AI Fund Analysis */}
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Sparkles className="w-5 h-5 text-blue-500" />
-              AI Fund Analysis
+            <CardTitle className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Sparkles className="w-5 h-5 text-blue-500" />
+                AI Fund Analysis
+                {isOfflineMode && (
+                  <Badge variant="secondary" className="bg-orange-100 text-orange-800">
+                    <WifiOff className="w-3 h-3 mr-1" />
+                    Offline Mode
+                  </Badge>
+                )}
+              </div>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={toggleOfflineMode}
+                className={isOfflineMode ? "bg-orange-50 border-orange-200" : ""}
+              >
+                {isOfflineMode ? (
+                  <>
+                    <Wifi className="w-4 h-4 mr-1" />
+                    Enable AI
+                  </>
+                ) : (
+                  <>
+                    <WifiOff className="w-4 h-4 mr-1" />
+                    Offline Mode
+                  </>
+                )}
+              </Button>
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               <div className="flex gap-3">
                 <Textarea
-                  placeholder="Ask me to find funds... (e.g., 'low risk US funds', 'high return tech funds', 'funds with low fees')"
+                  placeholder={isOfflineMode 
+                    ? "Offline analysis available: 'low risk funds', 'high return tech funds', 'US funds', 'low fees', 'bonds', etc."
+                    : "Ask me to find funds... (e.g., 'low risk US funds', 'high return tech funds', 'funds with low fees')"
+                  }
                   value={aiQuery}
                   onChange={(e) => setAiQuery(e.target.value)}
                   className="min-h-[80px]"
@@ -204,9 +260,17 @@ export default function ResearchPage() {
                   <Button 
                     onClick={handleAIAnalysis}
                     disabled={!aiQuery.trim() || aiAnalysisMutation.isPending}
-                    className="bg-blue-600 hover:bg-blue-700"
+                    className={isOfflineMode 
+                      ? "bg-orange-600 hover:bg-orange-700" 
+                      : "bg-blue-600 hover:bg-blue-700"
+                    }
                   >
-                    {aiAnalysisMutation.isPending ? "Analyzing..." : "Analyze"}
+                    {aiAnalysisMutation.isPending 
+                      ? "Analyzing..." 
+                      : isOfflineMode 
+                        ? "Analyze (Offline)" 
+                        : "Analyze"
+                    }
                   </Button>
                   {aiAnalysisMutation.isError && (
                     <p className="text-red-600 text-sm mt-2">
@@ -227,17 +291,41 @@ export default function ResearchPage() {
               </div>
               
               {showAIAnalysis && aiResults && (
-                <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
-                  <h4 className="font-medium text-blue-900 mb-2">Analysis Results</h4>
-                  <p className="text-blue-800 text-sm mb-2">{aiResults.explanation}</p>
+                <div className={`p-4 rounded-lg border ${
+                  isOfflineMode 
+                    ? "bg-orange-50 border-orange-200" 
+                    : "bg-blue-50 border-blue-200"
+                }`}>
+                  <h4 className={`font-medium mb-2 ${
+                    isOfflineMode ? "text-orange-900" : "text-blue-900"
+                  }`}>
+                    Analysis Results
+                    {isOfflineMode && (
+                      <span className="ml-2 text-xs text-orange-700">(Offline Analysis)</span>
+                    )}
+                  </h4>
+                  <p className={`text-sm mb-2 ${
+                    isOfflineMode ? "text-orange-800" : "text-blue-800"
+                  }`}>
+                    {aiResults.explanation}
+                  </p>
                   <div className="flex flex-wrap gap-1">
                     {aiResults.criteria.map((criterion, index) => (
-                      <Badge key={index} variant="secondary" className="bg-blue-100 text-blue-800">
+                      <Badge 
+                        key={index} 
+                        variant="secondary" 
+                        className={isOfflineMode 
+                          ? "bg-orange-100 text-orange-800" 
+                          : "bg-blue-100 text-blue-800"
+                        }
+                      >
                         {criterion}
                       </Badge>
                     ))}
                   </div>
-                  <p className="text-blue-600 text-xs mt-2">
+                  <p className={`text-xs mt-2 ${
+                    isOfflineMode ? "text-orange-600" : "text-blue-600"
+                  }`}>
                     Showing {aiResults.filteredFunds.length} matching funds
                   </p>
                 </div>
