@@ -111,6 +111,11 @@ Built on Radix UI primitives with custom theming:
 ## Changelog
 
 Changelog:
+- June 23, 2025. Added AI Fund Analysis feature using OpenAI GPT-4o for intelligent fund filtering in Research tab
+- June 23, 2025. Created Research tab with sortable fund table and region filters
+- June 23, 2025. Updated Portfolio to display all values in USD currency
+- June 23, 2025. Added Account tab as primary navigation with user profile and settings
+- June 23, 2025. Enhanced fund data with AUM and proper currency formatting (USD for US funds, EUR/GBP for offshore)
 - June 16, 2025. Initial setup
 
 ## User Preferences
