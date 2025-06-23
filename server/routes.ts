@@ -2,6 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertTransactionSchema } from "@shared/schema";
+import { analyzeFunds, type FundAnalysisRequest } from "./ai-agent";
 import { z } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {

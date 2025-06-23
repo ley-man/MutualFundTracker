@@ -1,25 +1,51 @@
 import { useState, useMemo } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Search, ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
+import { Search, ArrowUpDown, ArrowUp, ArrowDown, Sparkles, X } from "lucide-react";
+import { apiRequest } from "@/lib/queryClient";
 import type { Fund } from "@shared/schema";
 
 type SortField = "name" | "yearReturn" | "aum" | "riskLevel" | "expenseRatio";
 type SortDirection = "asc" | "desc";
+
+interface AIAnalysisResult {
+  filteredFunds: Fund[];
+  explanation: string;
+  criteria: string[];
+}
 
 export default function ResearchPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [regionFilter, setRegionFilter] = useState<"all" | "US" | "Offshore">("all");
   const [sortField, setSortField] = useState<SortField>("name");
   const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
+  const [aiQuery, setAiQuery] = useState("");
+  const [aiResults, setAiResults] = useState<AIAnalysisResult | null>(null);
+  const [showAIAnalysis, setShowAIAnalysis] = useState(false);
 
   const { data: funds = [], isLoading } = useQuery<Fund[]>({
     queryKey: ["/api/funds"],
+  });
+
+  const aiAnalysisMutation = useMutation({
+    mutationFn: async (query: string) => {
+      const response = await apiRequest<AIAnalysisResult>("/api/funds/analyze", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query }),
+      });
+      return response;
+    },
+    onSuccess: (data) => {
+      setAiResults(data);
+      setShowAIAnalysis(true);
+    },
   });
 
   const getRiskColor = (risk: string) => {
@@ -57,7 +83,10 @@ export default function ResearchPage() {
   };
 
   const filteredAndSortedFunds = useMemo(() => {
-    let filtered = funds.filter(fund => {
+    // Use AI results if available, otherwise use all funds
+    let baseList = showAIAnalysis && aiResults ? aiResults.filteredFunds : funds;
+    
+    let filtered = baseList.filter(fund => {
       const matchesSearch = fund.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                            fund.manager.toLowerCase().includes(searchTerm.toLowerCase());
       const matchesRegion = regionFilter === "all" || fund.region === regionFilter;
@@ -96,7 +125,19 @@ export default function ResearchPage() {
       if (aValue > bValue) return sortDirection === "asc" ? 1 : -1;
       return 0;
     });
-  }, [funds, searchTerm, regionFilter, sortField, sortDirection]);
+  }, [funds, searchTerm, regionFilter, sortField, sortDirection, showAIAnalysis, aiResults]);
+
+  const handleAIAnalysis = () => {
+    if (aiQuery.trim()) {
+      aiAnalysisMutation.mutate(aiQuery.trim());
+    }
+  };
+
+  const clearAIResults = () => {
+    setAiResults(null);
+    setShowAIAnalysis(false);
+    setAiQuery("");
+  };
 
   const handleSort = (field: SortField) => {
     if (sortField === field) {
@@ -121,10 +162,68 @@ export default function ResearchPage() {
           <p className="text-gray-600 mt-2">Analyze and compare mutual funds</p>
         </div>
 
+        {/* AI Fund Analysis */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Sparkles className="w-5 h-5 text-blue-500" />
+              AI Fund Analysis
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="flex gap-3">
+                <Textarea
+                  placeholder="Ask me to find funds... (e.g., 'low risk US funds', 'high return tech funds', 'funds with low fees')"
+                  value={aiQuery}
+                  onChange={(e) => setAiQuery(e.target.value)}
+                  className="min-h-[80px]"
+                />
+                <div className="flex flex-col gap-2">
+                  <Button 
+                    onClick={handleAIAnalysis}
+                    disabled={!aiQuery.trim() || aiAnalysisMutation.isPending}
+                    className="bg-blue-600 hover:bg-blue-700"
+                  >
+                    {aiAnalysisMutation.isPending ? "Analyzing..." : "Analyze"}
+                  </Button>
+                  {showAIAnalysis && (
+                    <Button 
+                      variant="outline"
+                      onClick={clearAIResults}
+                      size="sm"
+                    >
+                      <X className="w-4 h-4 mr-1" />
+                      Clear
+                    </Button>
+                  )}
+                </div>
+              </div>
+              
+              {showAIAnalysis && aiResults && (
+                <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
+                  <h4 className="font-medium text-blue-900 mb-2">Analysis Results</h4>
+                  <p className="text-blue-800 text-sm mb-2">{aiResults.explanation}</p>
+                  <div className="flex flex-wrap gap-1">
+                    {aiResults.criteria.map((criterion, index) => (
+                      <Badge key={index} variant="secondary" className="bg-blue-100 text-blue-800">
+                        {criterion}
+                      </Badge>
+                    ))}
+                  </div>
+                  <p className="text-blue-600 text-xs mt-2">
+                    Showing {aiResults.filteredFunds.length} matching funds
+                  </p>
+                </div>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+
         {/* Filters */}
         <Card>
           <CardHeader>
-            <CardTitle>Fund Analysis</CardTitle>
+            <CardTitle>Manual Filters</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
@@ -306,8 +405,11 @@ export default function ResearchPage() {
               <div>
                 <p className="text-sm text-gray-600">Showing Results</p>
                 <p className="text-lg font-semibold text-gray-900">
-                  {filteredAndSortedFunds.length} of {funds.length} funds
+                  {filteredAndSortedFunds.length} of {showAIAnalysis && aiResults ? aiResults.filteredFunds.length : funds.length} funds
                 </p>
+                {showAIAnalysis && (
+                  <p className="text-xs text-blue-600">Filtered by AI Analysis</p>
+                )}
               </div>
               <div className="text-right">
                 <p className="text-sm text-gray-600">Regions</p>
