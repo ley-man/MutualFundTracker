@@ -35,16 +35,33 @@ export default function ResearchPage() {
 
   const aiAnalysisMutation = useMutation({
     mutationFn: async (query: string) => {
-      const response = await apiRequest<AIAnalysisResult>("/api/funds/analyze", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query }),
-      });
-      return response;
+      console.log("Starting AI analysis for query:", query);
+      try {
+        const response = await fetch("/api/funds/analyze", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ query }),
+        });
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        console.log("AI analysis response:", data);
+        return data;
+      } catch (error) {
+        console.error("AI analysis error:", error);
+        throw error;
+      }
     },
     onSuccess: (data) => {
+      console.log("AI analysis successful, setting results:", data);
       setAiResults(data);
       setShowAIAnalysis(true);
+    },
+    onError: (error) => {
+      console.error("AI analysis mutation error:", error);
     },
   });
 
@@ -128,8 +145,12 @@ export default function ResearchPage() {
   }, [funds, searchTerm, regionFilter, sortField, sortDirection, showAIAnalysis, aiResults]);
 
   const handleAIAnalysis = () => {
+    console.log("handleAIAnalysis called with query:", aiQuery);
     if (aiQuery.trim()) {
+      console.log("Triggering AI analysis mutation");
       aiAnalysisMutation.mutate(aiQuery.trim());
+    } else {
+      console.log("Query is empty, not triggering analysis");
     }
   };
 
@@ -187,6 +208,11 @@ export default function ResearchPage() {
                   >
                     {aiAnalysisMutation.isPending ? "Analyzing..." : "Analyze"}
                   </Button>
+                  {aiAnalysisMutation.isError && (
+                    <p className="text-red-600 text-sm mt-2">
+                      Error: {aiAnalysisMutation.error?.message || "Analysis failed"}
+                    </p>
+                  )}
                   {showAIAnalysis && (
                     <Button 
                       variant="outline"
