@@ -108,9 +108,32 @@ Built on Radix UI primitives with custom theming:
 - **Migrations**: Generated in `migrations/` directory
 - **Push Command**: `npm run db:push` to sync schema changes
 
+## Azure Deployment Configuration
+
+The application is configured for Azure deployment with multiple options:
+
+### Deployment Files Created
+- `azure-deployment-guide.md`: Complete deployment guide with Azure CLI commands
+- `web.config`: IIS configuration for Azure App Service
+- `Dockerfile`: Container deployment option
+- `.deployment`: Azure build configuration
+- `.dockerignore`: Docker build optimization
+
+### Recommended Azure Services
+1. **Azure App Service** (Primary): Node.js hosting with auto-scaling
+2. **Azure Container Instances**: Docker-based deployment
+3. **Azure Static Web Apps + Functions**: Serverless architecture
+
+### Environment Variables Required
+- `NODE_ENV=production`
+- `DATABASE_URL`: Existing Neon Database connection
+- `OPENAI_API_KEY`: AI analysis functionality
+
 ## Changelog
 
 Changelog:
+- June 25, 2025. Added comprehensive Azure deployment configuration with multiple deployment options
+- June 25, 2025. Implemented offline fallback mode for AI analysis with intelligent pattern matching
 - June 23, 2025. Added AI Fund Analysis feature using OpenAI GPT-4o for intelligent fund filtering in Research tab
 - June 23, 2025. Created Research tab with sortable fund table and region filters
 - June 23, 2025. Updated Portfolio to display all values in USD currency
